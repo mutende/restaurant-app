@@ -4,20 +4,21 @@
             <div class="card">
                 <div class="card-header p-2">
                     <ul class="nav nav-pills ml-auto">
-                        <li class="nav-item"><a class="nav-link active" href="#menu-config" data-toggle="tab">Activity</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
-                        <li class="nav-item"><a class="nav-link " href="#settings" data-toggle="tab">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#categories" data-toggle="tab">Categories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#menu" data-toggle="tab">Menu</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link " href="#settings" data-toggle="tab">Settings</a></li> -->
                     </ul>
                 </div><!-- /.card-header -->
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="menu-config">
-                            <div class="col-12">
+                        <div class="tab-pane active" id="categories">
+                          <div class="col-12">
 
-                                <button class=" btn btn-success btn-sm mb-3 py-2" data-toggle="modal" data-target="#addMenu">Add Item <i class="fa fa-list-alt"></i></button>
+                              <button class=" btn btn-success btn-sm mb-3 py-2" data-toggle="modal" data-target="#categoryModal">Add Category <i class="fa fa-list-alt"></i></button>
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="addMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <!-- Modal -->
+                              <form @submit.prevent=" editCategoryMode ? updateCategory() : addCategory() " @keydown="category.onKeydown($event)">
+                                <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -28,94 +29,168 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="nameInput" >Item Name</label>
-                                                    <input type="text"  class="form-control"  id="nameInput"  name="name">
-                                                    <has-error :form="form" field="name"></has-error>
-
-                                                    <label for="categoryInput" >Category</label>
-                                                    <input type="text"  class="form-control"  id="categoryInput"  name="category">
+                                                    <label for="nameInput" >Category</label>
+                                                    <input type="text"  class="form-control" :class="{ 'is-invalid': category.errors.has('category') }" id="categoryInput" v-model="category.category" name="name">
                                                     <has-error :form="form" field="category"></has-error>
+
+
+
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cansel</button>
-                                                <button type="button" class="btn btn-success">Add Item</button>
-                                            </div>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+
+                                                <button v-show="!editCategoryMode" type="submit" class="btn btn-success btn-sm">Save category</button>
+                                                <button v-show="editCategoryMode" type="submit" class="btn btn-primary btn-sm">Update category</button>                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
+                              </form>
 
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Menu Items</h3>
 
-                                        <div class="card-tools">
-                                            <div class="input-group input-group-sm" style="width: 150px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                              <div class="card">
+                                  <div class="card-header">
+                                      <h3 class="card-title">Categories</h3>
 
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body table-responsive p-0">
-                                        <table class="table table-hover text-nowrap">
-                                            <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Category</th>
-                                                <th>Rate</th>
-                                                <th>Available</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Tea</td>
-                                                <td>Beverage</td>
-                                                <td>70%</td>
-                                                <td><span class="tag tag-success"><i class="fa fa-check text-success"></i></span></td>
+                                      <div class="card-tools">
+                                          <div class="input-group input-group-sm" style="width: 150px;">
+                                              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Mangoes</td>
-                                                <td>Fruits</td>
-                                                <td>90%</td>
-                                                <td><span class="tag tag-success"><i class="fa fa-times text-danger"></i></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Chicken</td>
-                                                <td>Beverage</td>
-                                                <td>60%</td>
-                                                <td><span class="tag tag-success"><i class="fa fa-times text-danger"></i></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Soda</td>
-                                                <td>Drinks</td>
-                                                <td>95%</td>
-                                                <td><span class="tag tag-success"><i class="fa fa-check text-success"></i></span></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                                <!-- /.card -->
-                            </div>
+                                              <div class="input-group-append">
+                                                  <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- /.card-header -->
+                                  <div class="card-body table-responsive p-0">
+                                      <table class="table table-hover text-nowrap">
+                                          <thead>
+                                          <tr>
+
+                                              <th>Category</th>
+
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                          <tr v-for="c in categories" :key="c.id">
+
+                                              <td>{{c.category}}</td>
+                                              <td>
+                                                <a href="#" class="mr-2"  @click="editCategoryModal(c)"> <i class="fa fa-edit text-info"></i> </a>
+
+                                                <a href="#" @click="deleteCategory(c.id)"> <i class="fa fa-trash text-danger"></i></a >
+                                              </td>
+
+                                          </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                                  <!-- /.card-body -->
+                              </div>
+                              <!-- /.card -->
+                          </div>
 
                         </div>
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="timeline">
-                            <!--  -->
-                            Tab 2
+                        <div class="tab-pane" id="menu">
+                          <div class="col-12">
+
+                              <button class=" btn btn-success btn-sm mb-3 py-2" data-toggle="modal" data-target="#menuModal">Add Item <i class="fa fa-list-alt"></i></button>
+                              <form @submit.prevent=" editMode ? updateMenu() : addMenu() " @keydown="form.onKeydown($event)">
+                                <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h4 v-show="!editMode" class="modal-title">Add Menu</h4>
+                                              <h4 v-show="editMode" class="modal-title">Update Menu</h4>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="nameInput" >Product Name</label>
+                                                    <input type="text"  class="form-control" :class="{ 'is-invalid': form.errors.has('product_name') }" id="productInput" v-model="form.product_name" name="product_name">
+                                                    <has-error :form="form" field="name"></has-error>
+
+                                                    <label for="categoryInput" >Category</label>
+                                                    <select class="form-control" :class="{ 'is-invalid': form.errors.has('category') }" id="categoryInput"  v-model="form.category" name="category" >
+                                                      <option value="">Choose category</option>
+                                                       <option v-for="(c, index) in categories" :value="c.id">{{ c.category }}</option>
+                                                    </select>
+                                                    <has-error :form="form" field="category"></has-error>
+
+                                                    <label for="nameInput" >Price</label>
+                                                    <input type="text"  class="form-control" :class="{ 'is-invalid': form.errors.has('price') }" id="priceInput" v-model="form.price" name="price">
+                                                    <has-error :form="form" field="price"></has-error>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                <button v-show="!editMode" type="submit" class="btn btn-success btn-sm">Save menu</button>
+                                                <button v-show="editMode" type="submit" class="btn btn-primary btn-sm">Update menu</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                              </form>
+                              <!-- Modal -->
+
+
+
+                              <div class="card">
+                                  <div class="card-header">
+                                      <h3 class="card-title">Menu Items</h3>
+
+                                      <div class="card-tools">
+                                          <div class="input-group input-group-sm" style="width: 150px;">
+                                              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                                              <div class="input-group-append">
+                                                  <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- /.card-header -->
+                                  <div class="card-body table-responsive p-0">
+                                      <table class="table table-hover text-nowrap">
+                                          <thead>
+                                          <tr>
+
+                                              <th>Name</th>
+                                              <th>Category</th>
+                                              <th>Price</th>
+
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                          <tr v-for="p in products" :key="(p.id)">
+
+                                              <td>{{p.product_name}}</td>
+                                              <!-- <td>{{p.category}}</td> -->
+                                              <td>{{p.price}}</td>
+                                              <!-- <td><span class="tag tag-success"><i class="fa fa-check text-success"></i></span></td> -->
+                                              <td>
+
+                                                <a href="#" class="mr-2"  @click="editModal(p)"> <i class="fa fa-edit text-info"></i> </a>
+
+                                                <a href="#" @click="deleteMenu(p.id)"> <i class="fa fa-trash text-danger"></i></a >
+                                              </td>
+                                          </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                                  <!-- /.card-body -->
+                              </div>
+                              <!-- /.card -->
+                          </div>
+
                         </div>
                         <!-- /.tab-pane -->
 
@@ -141,6 +216,215 @@
         mounted() {
             this.$Progress.start()
             this.$Progress.finish()
+        },
+        data(){
+          return{
+            editCategoryMode:false,
+            editMode:false,
+            products:[],
+            categories:[],
+            category: new Form({
+              category:''
+            }),
+            form: new Form({
+                product_name:'',
+                price:'',
+                category_id:'',
+
+
+            }),
+          }
+        },
+        methods:{
+            updateMenu(){
+              this.$Progress.start()
+              this.form.put('api/menu')
+                .then( ()=>{
+                    Fire.$emit('AfterAction');
+                    $('#menuModal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Menu Updated successfully'
+                    })
+                    this.fetchMenu()
+                    this.$Progress.finish()
+                }).catch(()=>{
+                  this.$Progress.fail()
+              })
+            },
+            updateCategory(){
+              this.$Progress.start()
+              this.category.patch('api/category')
+                .then( ()=>{
+                    Fire.$emit('AfterAction');
+                    $('#categoryModal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Category Updated successfully'
+                    })
+                    this.fetchCategory()
+                    this.$Progress.finish()
+                }).catch(()=>{
+                  this.$Progress.fail()
+              })
+            },
+            createmenuModal(){
+                this.editMode = false
+                this.form.reset()
+                $('#menuModal').modal('show');
+            },
+            createcategoryModal(){
+                this.editCategoryMode = false
+                this.category.reset()
+                $('#categoryModal').modal('show');
+            },
+            editmenuModal(menu){
+                this.editMode = true
+                this.form.reset()
+                $('#menuModal').modal('show');
+                this.form.fill(menu)
+            },
+            editCategoryModal(category){
+                this.editCategoryMode = true
+                this.category.reset()
+                $('#categoryModal').modal('show');
+                this.category.fill(category)
+            },
+
+            deleteMenu(id){
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+
+                    if(result.value) {
+                        this.$Progress.start()
+                        this.form.delete('api/menu/'+id).then(() => {
+                            this.$Progress.finish()
+                            swal.fire(
+                                'Deleted!',
+                                'Record Deleted',
+                                'success'
+                            )
+                            this.fetchMenu()
+                            Fire.$emit('AfterAction');
+                        }).catch(() => {
+                            this.$Progress.fail()
+                            swal.fire(
+                                'Failed!',
+                                'Something went wrong',
+                                'warning'
+                            )
+                        })
+                    }
+
+
+                })
+
+            },
+            deleteCategory(id){
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+
+                    if(result.value) {
+                        this.$Progress.start()
+                        this.category.delete('api/category/'+id).then(() => {
+                            this.$Progress.finish()
+                            swal.fire(
+                                'Deleted!',
+                                'Record Deleted',
+                                'success'
+                            )
+                            this.fetchCategory()
+                            Fire.$emit('AfterAction');
+                        }).catch(() => {
+                            this.$Progress.fail()
+                            swal.fire(
+                                'Failed!',
+                                'Something went wrong',
+                                'warning'
+                            )
+                        })
+                    }
+
+
+                })
+
+            },
+            fetchMenu(){
+                axios.get('api/menu')
+                    .then(({data})=>(this.products= data));
+
+            },
+            fetchCategory(){
+                axios.get('api/category')
+                    .then(({data})=>(this.categories= data));
+
+            },
+            addMenu(){
+               this.$Progress.start()
+               this.form.post('api/menu')
+                .then(()=>{
+                    Fire.$emit('AfterAction');
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Menu created successfully'
+                    })
+                    $('#menuModal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                    this.fetchMenu()
+                    this.$Progress.finish()
+
+                })
+               .catch()
+            },
+            addCategory(){
+               this.$Progress.start()
+               this.category.post('api/category')
+                .then(()=>{
+                    Fire.$emit('AfterAction');
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Category created successfully'
+                    })
+                    $('#categoryModal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                    this.fetchCategory()
+                    this.$Progress.finish()
+
+                })
+               .catch()
+            },
+        },
+        created(){
+            this.fetchMenu();
+            this.fetchCategory();
+            //
+            // Fire.$on('AfterAction', ()=>{
+            //     this.fetchMenu()
+            // })
         }
     }
 </script>

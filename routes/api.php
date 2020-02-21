@@ -19,5 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources([
     'hotel' =>'API\HotelController'
 ]);
-
-
+Route::apiResources([
+    'menu' =>'API\ProductController'
+]);
+Route::apiResources([
+    'category' =>'API\CategoryController'
+]);
+Route::apiResources([
+    'invoice' =>'API\InvoiceDetailController'
+]);
