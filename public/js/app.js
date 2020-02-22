@@ -1795,6 +1795,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Home",
   mounted: function mounted() {
@@ -1809,14 +1811,32 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         name: '',
         location: '',
-        logo: '',
-        user: this.$userId
+        logo: ''
       })
     };
   },
   methods: {
-    updateHotel: function updateHotel() {
+    showImage: function showImage(hotel) {
+      return "images/hotel_logos/" + hotel;
+    },
+    uploadLogo: function uploadLogo(e) {
       var _this = this;
+
+      var logo = e.target.files[0];
+      var reader = new FileReader();
+
+      if (logo['size'] <= 2111775) {
+        reader.onloadend = function (file) {
+          _this.form.logo = reader.result;
+        };
+
+        reader.readAsDataURL(logo);
+      } else {
+        swal.fire('Ooops...', 'your file is more than 2mbs', 'error');
+      }
+    },
+    updateHotel: function updateHotel() {
+      var _this2 = this;
 
       this.$Progress.start();
       this.form.put('api/hotel/' + this.form.id).then(function () {
@@ -1829,9 +1849,9 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Hotel Updated successfully'
         });
 
-        _this.$Progress.finish();
+        _this2.$Progress.finish();
       })["catch"](function () {
-        _this.$Progress.fail();
+        _this2.$Progress.fail();
       });
     },
     createHotelModal: function createHotelModal() {
@@ -1846,7 +1866,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.fill(hotel);
     },
     deleteHotel: function deleteHotel(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       swal.fire({
         title: 'Are you sure?',
@@ -1858,15 +1878,15 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          _this2.$Progress.start();
+          _this3.$Progress.start();
 
-          _this2.form["delete"]('api/hotel/' + id).then(function () {
-            _this2.$Progress.finish();
+          _this3.form["delete"]('api/hotel/' + id).then(function () {
+            _this3.$Progress.finish();
 
             swal.fire('Deleted!', 'Record Deleted', 'success');
             Fire.$emit('AfterAction');
           })["catch"](function () {
-            _this2.$Progress.fail();
+            _this3.$Progress.fail();
 
             swal.fire('Failed!', 'Something went wrong', 'warning');
           });
@@ -1874,15 +1894,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     fetchHotels: function fetchHotels() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get('api/hotel').then(function (_ref) {
         var data = _ref.data;
-        return _this3.hotels = data;
+        return _this4.hotels = data;
       });
     },
     addHotel: function addHotel() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$Progress.start();
       this.form.post('api/hotel').then(function () {
@@ -1895,16 +1915,16 @@ __webpack_require__.r(__webpack_exports__);
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
 
-        _this4.$Progress.finish();
+        _this5.$Progress.finish();
       })["catch"]();
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.fetchHotels();
     Fire.$on('AfterAction', function () {
-      _this5.fetchHotels();
+      _this6.fetchHotels();
     });
   }
 });
@@ -2150,10 +2170,79 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      form: new Form({
+        name: '',
+        email: '',
+        password: ''
+      })
+    };
+  },
   mounted: function mounted() {
     this.$Progress.start();
     this.$Progress.finish();
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('api/profile').then(function (_ref) {
+      var data = _ref.data;
+      return _this.form.fill(data);
+    });
+  },
+  methods: {
+    updateProfile: function updateProfile() {
+      var _this2 = this;
+
+      this.$Progress.start();
+      this.form.put('api/profile').then(function () {
+        swal.fire('Updated!', 'Profile Details Updated', 'success');
+
+        _this2.$Progress.finish();
+      })["catch"](function () {
+        _this2.$Progress.fail();
+      });
+    }
   }
 });
 
@@ -41868,7 +41957,26 @@ var render = function() {
                         })
                       ],
                       1
-                    )
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "exampleInputFile" } }, [
+                        _vm._v("Hotel Logo")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-group" }, [
+                        _c("div", { staticClass: "custom-file" }, [
+                          _c("input", {
+                            attrs: {
+                              type: "file",
+                              id: "exampleInputFile",
+                              name: "logo"
+                            },
+                            on: { change: _vm.uploadLogo }
+                          })
+                        ])
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -41956,24 +42064,49 @@ var render = function() {
           "div",
           { staticClass: "row mt-1 margin-top" },
           _vm._l(_vm.hotels, function(hotel) {
-            return _c("div", { key: hotel.id, staticClass: "col-lg-3 col-6" }, [
-              _c("div", { staticClass: "card" }, [
+            return _c("div", { key: hotel.id, staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "card justify-content-center" }, [
                 _c("div", { staticClass: "card-info" }, [
-                  _c("div", { staticClass: "card-header " }, [
+                  _c("div", { staticClass: "card-header text-center" }, [
                     _vm._v(
-                      "\n                                            " +
+                      "\n                                        " +
                         _vm._s(hotel.name) +
-                        "\n                                        "
+                        "\n                                    "
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "card-body" }, [
-                    _vm._v(
-                      "\n                                            " +
-                        _vm._s(hotel.location) +
-                        "\n                                        "
-                    )
-                  ]),
+                  _c(
+                    "div",
+                    { staticClass: "card-body  text-primary text-center" },
+                    [
+                      hotel.logo
+                        ? _c(
+                            "div",
+                            {
+                              staticClass:
+                                "widget-user-image justify-content-center"
+                            },
+                            [
+                              _c("img", {
+                                staticClass: "img-circle elevation-2",
+                                attrs: {
+                                  src: _vm.showImage(hotel.logo),
+                                  alt: "User"
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "mt-2" }, [
+                        _vm._v(
+                          "\n                                           Location : " +
+                            _vm._s(hotel.location) +
+                            "\n                                       "
+                        )
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-footer" }, [
                     _c(
@@ -42511,25 +42644,208 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "row justify-content-center" }, [
+    _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "card card-widget widget-user" }, [
+        _c("div", { staticClass: "widget-user-header bg-info" }, [
+          _c("h3", { staticClass: "widget-user-username" }, [
+            _vm._v(_vm._s(_vm.form.name))
+          ]),
+          _vm._v(" "),
+          _c("h5", { staticClass: "widget-user-desc" }, [
+            _vm._v(_vm._s(_vm.form.email))
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer" }, [
+          _c("div", { staticClass: "row justify-content-center mt-5" }, [
+            _c("form", { staticClass: "form-horizontal" }, [
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-sm-3 col-form-label",
+                    attrs: { for: "inputName" }
+                  },
+                  [_vm._v("Name")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-sm-9" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.name,
+                          expression: "form.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: { "is-invalid": _vm.form.errors.has("name") },
+                      attrs: {
+                        type: "name",
+                        id: "inputName",
+                        placeholder: "Name"
+                      },
+                      domProps: { value: _vm.form.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "name", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("has-error", {
+                      attrs: { form: _vm.form, field: "name" }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-sm-3 col-form-label",
+                    attrs: { for: "inputEmail" }
+                  },
+                  [_vm._v("Email")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-sm-9" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.email,
+                          expression: "form.email"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: { "is-invalid": _vm.form.errors.has("email") },
+                      attrs: {
+                        type: "email",
+                        id: "inputEmail",
+                        placeholder: "Email"
+                      },
+                      domProps: { value: _vm.form.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "email", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("has-error", {
+                      attrs: { form: _vm.form, field: "email" }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-sm-3 col-form-label text-sm",
+                    staticStyle: { "font-size": "13px !important" },
+                    attrs: { for: "inputPassword" }
+                  },
+                  [_vm._v("Password")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-9" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.password,
+                          expression: "form.password"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: { "is-invalid": _vm.form.errors.has("password") },
+                      attrs: {
+                        type: "password",
+                        name: "password",
+                        id: "inputPassword",
+                        placeholder: "Blank is unchanged"
+                      },
+                      domProps: { value: _vm.form.password },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "password", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("has-error", {
+                      attrs: { form: _vm.form, field: "password" }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c("div", { staticClass: "offset-sm-2 col-sm-10" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary btn-block",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.updateProfile($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Update")]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [_vm._v("Profile")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v("\n                   User profile\n                ")
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "widget-user-image" }, [
+      _c("img", {
+        staticClass: "img-circle elevation-2",
+        attrs: { src: "dist/img/user2-160x160.jpg", alt: "User icon" }
+      })
     ])
   }
 ]
@@ -57827,8 +58143,8 @@ window.Toast = Toast;
 window.Fire = new Vue();
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["HasError"]);
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"]);
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
-Vue.prototype.$userId = document.querySelector("meta[name='user-id']").getAttribute('content');
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); // Vue.prototype.$userId =  document.querySelector("meta[name='user-id']").getAttribute('content');
+
 var routes = [{
   path: '/profile',
   component: __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue")["default"]

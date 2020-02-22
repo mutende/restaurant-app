@@ -20,4 +20,6 @@ Route::apiResources([
     'hotel' =>'API\HotelController'
 ]);
 
+Route::get('profile', 'API\ProfileController@userProfile');
+Route::put('profile', 'API\ProfileController@updateProfile');
 

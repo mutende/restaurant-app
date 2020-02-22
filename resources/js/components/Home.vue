@@ -30,19 +30,16 @@
                                     <has-error :form="form" field="location"></has-error>
                                 </div>
 
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="exampleInputFile">Hotel Logo</label>-->
-<!--                                        <div class="input-group">-->
-<!--                                            <div class="custom-file">-->
-<!--                                                <input type="file" class="form-control" id="exampleInputFile"  name="logo">-->
-<!--                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>-->
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Hotel Logo</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file"  id="exampleInputFile" @change="uploadLogo" name="logo">
 
-<!--                                            </div>-->
-<!--                                            <div class="input-group-append">-->
-<!--                                                <span class="input-group-text" id="">Upload</span>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
+                                            </div>
+
+                                        </div>
+                                    </div>
                             </div>
                             <input type="hidden" v-model="form.user" name="user">
                             <div class="modal-footer justify-content-between">
@@ -64,15 +61,20 @@
 
             <div class="row mt-1 margin-top">
 
-                            <div class="col-lg-3 col-6" v-for="hotel in hotels" :key="hotel.id">
+                            <div class="col-md-4" v-for="hotel in hotels" :key="hotel.id">
                                 <!-- small box -->
-                                <div class="card">
+                                <div class="card justify-content-center">
                                     <div class="card-info">
-                                        <div class="card-header ">
+                                        <div class="card-header text-center">
                                             {{hotel.name}}
                                         </div>
-                                        <div class="card-body">
-                                            {{ hotel.location }}
+                                        <div class="card-body  text-primary text-center">
+                                            <div v-if="hotel.logo" class="widget-user-image justify-content-center">
+                                                <img class="img-circle elevation-2" :src="showImage(hotel.logo)" alt="User">
+                                            </div>
+                                           <p class="mt-2">
+                                               Location : {{ hotel.location }}
+                                           </p>
                                         </div>
                                         <div class="card-footer">
                                             <a href="#" class="mr-2"  @click="editHotelModal(hotel)"> <i class="fa fa-edit text-info"></i> </a>
@@ -112,13 +114,36 @@
                     id:'',
                     name:'',
                     location:'',
-                    logo:'',
-                    user:this.$userId
+                    logo:''
                 }),
 
             }
         },
         methods:{
+            showImage(hotel){
+              return "images/hotel_logos/"+hotel;
+            },
+            uploadLogo(e){
+              let logo = e.target.files[0];
+              let reader = new FileReader();
+              if(logo['size']<= 2111775){
+
+                  reader.onloadend = (file) => {
+                      this.form.logo =  reader.result
+                  }
+                  reader.readAsDataURL(logo);
+              }else{
+
+                  swal.fire(
+                      'Ooops...',
+                      'your file is more than 2mbs',
+                      'error'
+                  )
+
+              }
+
+
+            },
             updateHotel(){
               this.$Progress.start()
               this.form.put('api/hotel/'+this.form.id)
