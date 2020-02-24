@@ -17,6 +17,7 @@
                             <li class="breadcrumb-item"><router-link to="/sell">Sell</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/reports">Reports</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/invoice">Invoice</router-link></li>
+                            <li class="breadcrumb-item"><router-link to="/profile">Profile</router-link></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->

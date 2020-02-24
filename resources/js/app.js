@@ -38,7 +38,7 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.use(VueRouter)
 
-Vue.prototype.$userId =  document.querySelector("meta[name='user-id']").getAttribute('content');
+// Vue.prototype.$userId =  document.querySelector("meta[name='user-id']").getAttribute('content');
 const routes = [
     {path: '/profile', component: require('./components/Profile.vue').default},
     {path: '/home', component: require('./components/Home.vue').default},

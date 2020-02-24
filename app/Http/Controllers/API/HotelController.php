@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Hotel;
 use Auth;
 use App\Http\Resources\Hotel as HotelResource;
+use Intervention\Image\Facades\Image;
+use phpDocumentor\Reflection\File;
 
 class HotelController extends Controller
 {
@@ -28,46 +30,49 @@ class HotelController extends Controller
         return Hotel::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
+
+
         $this->validate($request,[
             'name' => 'required',
             'location' => 'required'
         ]);
+        $userID =  auth('api')->user()->id;
+
+           if($request->logo){
+               $this->uploadImage($request->logo);
+               $request->logo = $this->generateName($request->logo);
+           }
 
         return Hotel::create([
            'name' => $request->name,
            'location'=>$request->location,
-           'user_id' =>$request->user,
+           'user_id' =>$userID,
             'logo' =>$request->logo,
             'created' => date('Y-m-d H:i:s')
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    private function generateName($image){
+
+        return time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+    }
+
+    private  function uploadImage($image){
+
+        Image::make($image)->resize(160, 160)->save(public_path('images/hotel_logos/').$this->generateName($image));
+
+
+    }
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
 
@@ -76,30 +81,41 @@ class HotelController extends Controller
             'name' => 'required',
             'location' => 'required'
         ]);
+
+        $currentImage = $hotel->logo;
+
+
+        if($request->logo != $currentImage){
+            $name= $this->generateName($request->logo);
+            $this->uploadImage($request->logo);
+            $request->merge(['logo'=>$name]);
+            $pathToCurrentLogo = public_path('images/hotel_logos/').$currentImage;
+            if(file_exists($pathToCurrentLogo)){
+                @unlink($pathToCurrentLogo);
+            }
+        }
+
         $hotel->update($request->all());
 
-        return $request;
+        return ["Message" => "Success"];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $hotel = Hotel::findOrFail($id);
 
         $hotel->delete();
 
+        $currentImage = $hotel->logo;
+
+        $pathToCurrentLogo = public_path('images/hotel_logos/').$currentImage;
+        if(file_exists($pathToCurrentLogo)){
+            @unlink($pathToCurrentLogo);
+        }
+
         return ['message'=> 'Hotel deleted'];
     }
 
-//    public function showHotels(){
-//
-//        $hotels = Hotel::all();
-//
-//        return HotelResource::collection($hotels);
-//    }
+
 }

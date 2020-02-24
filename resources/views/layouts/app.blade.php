@@ -10,9 +10,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    @if(Auth::check())
-        <meta name="user-id" content="{{ Auth::user()->id }}">
-    @endif
 
     <title> Res | @yield('title')</title>
 
