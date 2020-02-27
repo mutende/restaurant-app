@@ -272,7 +272,7 @@
                   swal.fire({
                       type: 'error',
                       title: 'Oops...',
-                      text: 'Cannot make order if cart is empty!',
+                      text: 'Cannot make payment if cart is empty!',
                       //footer: '<a href>Why do I have this issue?</a>'
                   })
               } else{

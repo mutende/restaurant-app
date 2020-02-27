@@ -14,7 +14,7 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link to="/home">Dashboard</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/menu">Menu</router-link></li>
-                            <li class="breadcrumb-item"><router-link to="/sell">Sell</router-link></li>
+                            <li class="breadcrumb-item"><router-link to="/sell">Point of Sell</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/reports">Reports</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/invoice">Invoice</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/profile">Profile</router-link></li>

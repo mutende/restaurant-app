@@ -88,9 +88,9 @@
 
                         <li class="nav-item">
                             <router-link to="/sell" class="nav-link">
-                                <i class="nav-icon fa fa-list-alt"></i>
+                                <i class="nav-icon fa fa-money"></i>
                                 <p>
-                                    Sell
+                                    Point of Sell
                                 </p>
                             </router-link>
                         </li>

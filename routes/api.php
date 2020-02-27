@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources([
     'hotel' =>'API\HotelController'
 ]);
-<<<<<<< HEAD
+
 Route::apiResources([
     'menu' =>'API\ProductController'
 ]);
@@ -29,9 +29,7 @@ Route::apiResources([
 Route::apiResources([
     'invoice' =>'API\InvoiceDetailController'
 ]);
-=======
+
 
 Route::get('profile', 'API\ProfileController@userProfile');
 Route::put('profile', 'API\ProfileController@updateProfile');
-
->>>>>>> bcd28e1e1f5e4a897eb520d5f3dd3d356be05870

@@ -2205,11 +2205,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Menu",
   mounted: function mounted() {
@@ -2223,9 +2218,11 @@ __webpack_require__.r(__webpack_exports__);
       products: [],
       categories: [],
       category: new Form({
+        id: '',
         category: ''
       }),
       form: new Form({
+        id: '',
         product_name: '',
         price: '',
         category_id: ''
@@ -2237,8 +2234,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$Progress.start();
-      this.form.put('api/menu').then(function () {
-        Fire.$emit('AfterAction');
+      this.form.put('api/menu/' + this.form.id).then(function () {
+        Fire.$emit('AfterMenuAction');
         $('#menuModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
@@ -2247,9 +2244,11 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Menu Updated successfully'
         });
 
-        _this.fetchMenu();
+        _this.form.reset();
 
         _this.$Progress.finish();
+
+        _this.editMode = false;
       })["catch"](function () {
         _this.$Progress.fail();
       });
@@ -2258,8 +2257,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$Progress.start();
-      this.category.patch('api/category').then(function () {
-        Fire.$emit('AfterAction');
+      this.category.put('api/category/' + this.category.id).then(function () {
+        Fire.$emit('AfterMenuCategoryAction');
         $('#categoryModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
@@ -2268,7 +2267,9 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Category Updated successfully'
         });
 
-        _this2.fetchCategory();
+        _this2.category.reset();
+
+        _this2.editCategoryMode = false;
 
         _this2.$Progress.finish();
       })["catch"](function () {
@@ -2316,10 +2317,7 @@ __webpack_require__.r(__webpack_exports__);
             _this3.$Progress.finish();
 
             swal.fire('Deleted!', 'Record Deleted', 'success');
-
-            _this3.fetchMenu();
-
-            Fire.$emit('AfterAction');
+            Fire.$emit('AfterMenuAction');
           })["catch"](function () {
             _this3.$Progress.fail();
 
@@ -2347,10 +2345,7 @@ __webpack_require__.r(__webpack_exports__);
             _this4.$Progress.finish();
 
             swal.fire('Deleted!', 'Record Deleted', 'success');
-
-            _this4.fetchCategory();
-
-            Fire.$emit('AfterAction');
+            Fire.$emit('AfterMenuCategoryAction');
           })["catch"](function () {
             _this4.$Progress.fail();
 
@@ -2380,16 +2375,14 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$Progress.start();
       this.form.post('api/menu').then(function () {
-        Fire.$emit('AfterAction');
+        Fire.$emit('AfterMenuAction');
         Toast.fire({
           icon: 'success',
           title: 'Menu created successfully'
         });
         $('#menuModal').modal('hide');
         $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-
-        _this7.fetchMenu();
+        $('.modal-backdrop').remove(); // this.fetchMenu()
 
         _this7.$Progress.finish();
       })["catch"]();
@@ -2399,7 +2392,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$Progress.start();
       this.category.post('api/category').then(function () {
-        Fire.$emit('AfterAction');
+        Fire.$emit('AfterMenuCategoryAction');
         Toast.fire({
           icon: 'success',
           title: 'Category created successfully'
@@ -2408,18 +2401,24 @@ __webpack_require__.r(__webpack_exports__);
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
 
-        _this8.fetchCategory();
+        _this8.form.reset();
 
         _this8.$Progress.finish();
       })["catch"]();
     }
   },
   created: function created() {
+    var _this9 = this;
+
     this.fetchMenu();
     this.fetchCategory(); //
-    // Fire.$on('AfterAction', ()=>{
-    //     this.fetchMenu()
-    // })
+
+    Fire.$on('AfterMenuAction', function () {
+      _this9.fetchMenu();
+    });
+    Fire.$on('AfterMenuCategoryAction', function () {
+      _this9.fetchCategory();
+    });
   }
 });
 
@@ -2833,7 +2832,7 @@ __webpack_require__.r(__webpack_exports__);
         swal.fire({
           type: 'error',
           title: 'Oops...',
-          text: 'Cannot make order if cart is empty!' //footer: '<a href>Why do I have this issue?</a>'
+          text: 'Cannot make payment if cart is empty!' //footer: '<a href>Why do I have this issue?</a>'
 
         });
       } else {
@@ -43537,7 +43536,7 @@ var render = function() {
                                     [
                                       _c(
                                         "label",
-                                        { attrs: { for: "nameInput" } },
+                                        { attrs: { for: "categoryInput1" } },
                                         [_vm._v("Category")]
                                       ),
                                       _vm._v(" "),
@@ -43558,7 +43557,7 @@ var render = function() {
                                         },
                                         attrs: {
                                           type: "text",
-                                          id: "categoryInput",
+                                          id: "categoryInput1",
                                           name: "name"
                                         },
                                         domProps: {
@@ -43794,7 +43793,7 @@ var render = function() {
                                   [
                                     _c(
                                       "label",
-                                      { attrs: { for: "nameInput" } },
+                                      { attrs: { for: "productInput" } },
                                       [_vm._v("Product Name")]
                                     ),
                                     _vm._v(" "),
@@ -43836,7 +43835,10 @@ var render = function() {
                                     }),
                                     _vm._v(" "),
                                     _c("has-error", {
-                                      attrs: { form: _vm.form, field: "name" }
+                                      attrs: {
+                                        form: _vm.form,
+                                        field: "product_name"
+                                      }
                                     }),
                                     _vm._v(" "),
                                     _c(
@@ -43920,7 +43922,7 @@ var render = function() {
                                     _vm._v(" "),
                                     _c(
                                       "label",
-                                      { attrs: { for: "nameInput" } },
+                                      { attrs: { for: "priceInput" } },
                                       [_vm._v("Price")]
                                     ),
                                     _vm._v(" "),
@@ -44048,7 +44050,7 @@ var render = function() {
                                     attrs: { href: "#" },
                                     on: {
                                       click: function($event) {
-                                        return _vm.editModal(p)
+                                        return _vm.editmenuModal(p)
                                       }
                                     }
                                   },
@@ -44085,10 +44087,6 @@ var render = function() {
                   ])
                 ])
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "tab-pane", attrs: { id: "settings" } }, [
-              _vm._v("\n                       Tab 3\n                    ")
             ])
           ])
         ])
@@ -44110,7 +44108,7 @@ var staticRenderFns = [
               staticClass: "nav-link active",
               attrs: { href: "#categories", "data-toggle": "tab" }
             },
-            [_vm._v("Categories")]
+            [_vm._v("Meal Categories")]
           )
         ]),
         _vm._v(" "),
@@ -44121,7 +44119,7 @@ var staticRenderFns = [
               staticClass: "nav-link",
               attrs: { href: "#menu", "data-toggle": "tab" }
             },
-            [_vm._v("Menu")]
+            [_vm._v("Menu Items")]
           )
         ])
       ])
@@ -45065,7 +45063,7 @@ function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functional component in vue file
+      // register for functioal component in vue file
       var originalRender = options.render
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
@@ -60663,8 +60661,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /opt/lampp/htdocs/restaurant-app/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /opt/lampp/htdocs/restaurant-app/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/restaurant/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/restaurant/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

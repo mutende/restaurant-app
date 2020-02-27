@@ -4,8 +4,8 @@
             <div class="card">
                 <div class="card-header p-2">
                     <ul class="nav nav-pills ml-auto">
-                        <li class="nav-item"><a class="nav-link active" href="#categories" data-toggle="tab">Categories</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#menu" data-toggle="tab">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#categories" data-toggle="tab">Meal Categories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#menu" data-toggle="tab">Menu Items</a></li>
                         <!-- <li class="nav-item"><a class="nav-link " href="#settings" data-toggle="tab">Settings</a></li> -->
                     </ul>
                 </div><!-- /.card-header -->
@@ -29,8 +29,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="nameInput" >Category</label>
-                                                    <input type="text"  class="form-control" :class="{ 'is-invalid': category.errors.has('category') }" id="categoryInput" v-model="category.category" name="name">
+                                                    <label for="categoryInput1" >Category</label>
+                                                    <input type="text"  class="form-control" :class="{ 'is-invalid': category.errors.has('category') }" id="categoryInput1" v-model="category.category" name="name">
                                                     <has-error :form="form" field="category"></has-error>
 
 
@@ -112,9 +112,9 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="nameInput" >Product Name</label>
+                                                    <label for="productInput" >Product Name</label>
                                                     <input type="text"  class="form-control" :class="{ 'is-invalid': form.errors.has('product_name') }" id="productInput" v-model="form.product_name" name="product_name">
-                                                    <has-error :form="form" field="name"></has-error>
+                                                    <has-error :form="form" field="product_name"></has-error>
 
                                                     <label for="categoryInput" >Category</label>
                                                     <select class="form-control" :class="{ 'is-invalid': form.errors.has('category') }" id="categoryInput"  v-model="form.category" name="category" >
@@ -123,7 +123,7 @@
                                                     </select>
                                                     <has-error :form="form" field="category"></has-error>
 
-                                                    <label for="nameInput" >Price</label>
+                                                    <label for="priceInput" >Price</label>
                                                     <input type="text"  class="form-control" :class="{ 'is-invalid': form.errors.has('price') }" id="priceInput" v-model="form.price" name="price">
                                                     <has-error :form="form" field="price"></has-error>
 
@@ -178,7 +178,7 @@
                                               <!-- <td><span class="tag tag-success"><i class="fa fa-check text-success"></i></span></td> -->
                                               <td>
 
-                                                <a href="#" class="mr-2"  @click="editModal(p)"> <i class="fa fa-edit text-info"></i> </a>
+                                                <a href="#" class="mr-2"  @click="editmenuModal(p)"> <i class="fa fa-edit text-info"></i> </a>
 
                                                 <a href="#" @click="deleteMenu(p.id)"> <i class="fa fa-trash text-danger"></i></a >
                                               </td>
@@ -191,11 +191,6 @@
                               <!-- /.card -->
                           </div>
 
-                        </div>
-                        <!-- /.tab-pane -->
-
-                        <div class="tab-pane" id="settings">
-                           Tab 3
                         </div>
                         <!-- /.tab-pane -->
                     </div>
@@ -224,9 +219,11 @@
             products:[],
             categories:[],
             category: new Form({
+                id:'',
               category:''
             }),
             form: new Form({
+                id:'',
                 product_name:'',
                 price:'',
                 category_id:'',
@@ -238,9 +235,9 @@
         methods:{
             updateMenu(){
               this.$Progress.start()
-              this.form.put('api/menu')
+              this.form.put('api/menu/'+this.form.id)
                 .then( ()=>{
-                    Fire.$emit('AfterAction');
+                    Fire.$emit('AfterMenuAction');
                     $('#menuModal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
@@ -249,26 +246,28 @@
                         icon: 'success',
                         title: 'Menu Updated successfully'
                     })
-                    this.fetchMenu()
+
+                    this.form.reset()
                     this.$Progress.finish()
+                    this.editMode = false
                 }).catch(()=>{
                   this.$Progress.fail()
               })
             },
             updateCategory(){
               this.$Progress.start()
-              this.category.patch('api/category')
+              this.category.put('api/category/'+this.category.id)
                 .then( ()=>{
-                    Fire.$emit('AfterAction');
+                    Fire.$emit('AfterMenuCategoryAction');
                     $('#categoryModal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
-
                     Toast.fire({
                         icon: 'success',
                         title: 'Category Updated successfully'
                     })
-                    this.fetchCategory()
+                    this.category.reset()
+                    this.editCategoryMode = false
                     this.$Progress.finish()
                 }).catch(()=>{
                   this.$Progress.fail()
@@ -317,8 +316,8 @@
                                 'Record Deleted',
                                 'success'
                             )
-                            this.fetchMenu()
-                            Fire.$emit('AfterAction');
+
+                            Fire.$emit('AfterMenuAction');
                         }).catch(() => {
                             this.$Progress.fail()
                             swal.fire(
@@ -353,8 +352,8 @@
                                 'Record Deleted',
                                 'success'
                             )
-                            this.fetchCategory()
-                            Fire.$emit('AfterAction');
+
+                            Fire.$emit('AfterMenuCategoryAction');
                         }).catch(() => {
                             this.$Progress.fail()
                             swal.fire(
@@ -383,7 +382,7 @@
                this.$Progress.start()
                this.form.post('api/menu')
                 .then(()=>{
-                    Fire.$emit('AfterAction');
+                    Fire.$emit('AfterMenuAction');
 
                     Toast.fire({
                         icon: 'success',
@@ -392,7 +391,7 @@
                     $('#menuModal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
-                    this.fetchMenu()
+                    // this.fetchMenu()
                     this.$Progress.finish()
 
                 })
@@ -402,7 +401,7 @@
                this.$Progress.start()
                this.category.post('api/category')
                 .then(()=>{
-                    Fire.$emit('AfterAction');
+                    Fire.$emit('AfterMenuCategoryAction');
 
                     Toast.fire({
                         icon: 'success',
@@ -411,7 +410,7 @@
                     $('#categoryModal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
-                    this.fetchCategory()
+                    this.form.reset()
                     this.$Progress.finish()
 
                 })
@@ -422,9 +421,13 @@
             this.fetchMenu();
             this.fetchCategory();
             //
-            // Fire.$on('AfterAction', ()=>{
-            //     this.fetchMenu()
-            // })
+            Fire.$on('AfterMenuAction', ()=>{
+                this.fetchMenu()
+            })
+
+            Fire.$on('AfterMenuCategoryAction', ()=>{
+                this.fetchCategory()
+            })
         }
     }
 </script>

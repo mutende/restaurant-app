@@ -127,7 +127,6 @@
               let logo = e.target.files[0];
               let reader = new FileReader();
               if(logo['size']<= 2111775){
-
                   reader.onloadend = (file) => {
                       this.form.logo =  reader.result
                   }
@@ -220,7 +219,6 @@
                this.form.post('api/hotel')
                 .then(()=>{
                     Fire.$emit('AfterAction');
-
                     Toast.fire({
                         icon: 'success',
                         title: 'Hotel created successfully'
