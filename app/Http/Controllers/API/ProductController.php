@@ -8,32 +8,25 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+
+
+    }
+
     public function index()
     {
-        return Product::all();
+        return Product::with('category')->paginate(7);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getItems()
     {
-        //
+        return Product::with('category')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
 
@@ -52,35 +45,8 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
       $prod = Product::findOrFail($id);
@@ -96,12 +62,7 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //
@@ -110,5 +71,20 @@ class ProductController extends Controller
         $prod->delete();
 
         return ['message'=> 'Hotel deleted'];
+    }
+
+    public function filterproducts()
+    {
+
+        if ($search = \Request::get('q')) {
+            $products = Product::where(function ($query) use ($search) {
+                $query->where('product_name', 'LIKE', "%$search");
+            })->with('category')->paginate(7);
+
+        }else{
+            $products =  Product::with('category')->paginate(7);
+        }
+
+        return $products;
     }
 }

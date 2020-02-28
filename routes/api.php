@@ -33,3 +33,7 @@ Route::apiResources([
 
 Route::get('profile', 'API\ProfileController@userProfile');
 Route::put('profile', 'API\ProfileController@updateProfile');
+Route::get('items','API\ProductController@getItems');
+Route::get('searchcategory','API\CategoryController@filterCategories');
+Route::get('searchmenu','API\ProductController@filterproducts');
+

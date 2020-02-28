@@ -11,7 +11,7 @@ class Product extends Model
     protected $fillable = ['product_name','quantity','price','category_id','description',
   'rate','available'];
 
-  public function categories(){
+  public function category(){
     return $this->belongsTo(Category::class);
   }
 }

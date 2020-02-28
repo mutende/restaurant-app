@@ -37,6 +37,7 @@ window.Fire = new Vue()
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.use(VueRouter)
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 // Vue.prototype.$userId =  document.querySelector("meta[name='user-id']").getAttribute('content');
 const routes = [
@@ -46,6 +47,7 @@ const routes = [
     {path: '/invoice', component: require('./components/Invoice.vue').default},
     {path: '/reports', component: require('./components/Reports.vue').default},
     {path: '/sell', component: require('./components/Sell.vue').default},
+    {path: '*', component: require('./components/Home.vue').default},
 
 
 ]

@@ -16,7 +16,7 @@
                 <!-- items here -->
                 <div class="row">
                   <div v-for="p in filteredProduct" class="col-md-4">
-                    <h3 class="text-center">{{p.product_name}}</h3>
+                    <h3 class="text-center">{{p.product_name}} - {{p.price}}/=</h3>
                   <button type="button" class="btn btn-info btn-sm btn-block" @click="addToCart(p)">Add To Cart</button>
                   <br>
                   <hr>
@@ -220,7 +220,7 @@
         },
         methods:{
           fetchProducts(){
-              axios.get('api/menu')
+              axios.get('api/items')
                   .then(({data})=>(this.menu= data));
 
           },

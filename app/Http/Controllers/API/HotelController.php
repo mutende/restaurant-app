@@ -20,11 +20,7 @@ class HotelController extends Controller
 
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return Hotel::all();
@@ -67,10 +63,6 @@ class HotelController extends Controller
 
     }
 
-    public function show($id)
-    {
-        //
-    }
 
 
     public function update(Request $request, $id)

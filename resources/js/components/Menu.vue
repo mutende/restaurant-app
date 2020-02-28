@@ -56,10 +56,10 @@
 
                                       <div class="card-tools">
                                           <div class="input-group input-group-sm" style="width: 150px;">
-                                              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                                              <input type="text" v-model="category_search" name="table_search" class="form-control float-right" placeholder="Search" @keyup="catgorySearch">
 
                                               <div class="input-group-append">
-                                                  <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                                  <button @click="catgorySearch" type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
                                               </div>
                                           </div>
                                       </div>
@@ -71,11 +71,12 @@
                                           <tr>
 
                                               <th>Category</th>
+                                              <th>Action</th>
 
                                           </tr>
                                           </thead>
                                           <tbody>
-                                          <tr v-for="c in categories" :key="c.id">
+                                          <tr v-for="c in categories" :key="(c.id)">
 
                                               <td>{{c.category}}</td>
                                               <td>
@@ -89,6 +90,7 @@
                                       </table>
                                   </div>
                                   <!-- /.card-body -->
+
                               </div>
                               <!-- /.card -->
                           </div>
@@ -97,7 +99,6 @@
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="menu">
                           <div class="col-12">
-
                               <button class=" btn btn-success btn-sm mb-3 py-2" data-toggle="modal" data-target="#menuModal">Add Item <i class="fa fa-list-alt"></i></button>
                               <form @submit.prevent=" editMode ? updateMenu() : addMenu() " @keydown="form.onKeydown($event)">
                                 <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -149,10 +150,10 @@
 
                                       <div class="card-tools">
                                           <div class="input-group input-group-sm" style="width: 150px;">
-                                              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                                              <input type="text" v-model = "menu_search" name="table_search" class="form-control float-right" placeholder="Search" @keyup="menuSearch">
 
                                               <div class="input-group-append">
-                                                  <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                                  <button @submit="menuSearch" type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
                                               </div>
                                           </div>
                                       </div>
@@ -166,15 +167,18 @@
                                               <th>Name</th>
                                               <th>Category</th>
                                               <th>Price</th>
+                                              <th>Action</th>
 
                                           </tr>
                                           </thead>
                                           <tbody>
-                                          <tr v-for="p in products" :key="(p.id)">
+                                          <tr v-for="p in products.data" :key="(p.id)">
 
                                               <td>{{p.product_name}}</td>
-                                              <!-- <td>{{p.category}}</td> -->
+
+                                               <td>{{p.category.category}}</td>
                                               <td>{{p.price}}</td>
+
                                               <!-- <td><span class="tag tag-success"><i class="fa fa-check text-success"></i></span></td> -->
                                               <td>
 
@@ -187,6 +191,12 @@
                                       </table>
                                   </div>
                                   <!-- /.card-body -->
+                                  <div class="card-footer">
+                                      <div class="card-tools py-1 float-right">
+                                          <pagination :data="products" @pagination-change-page="getProducts"></pagination>
+                                      </div>
+
+                                  </div>
                               </div>
                               <!-- /.card -->
                           </div>
@@ -216,7 +226,7 @@
           return{
             editCategoryMode:false,
             editMode:false,
-            products:[],
+            products:{},
             categories:[],
             category: new Form({
                 id:'',
@@ -230,9 +240,23 @@
 
 
             }),
+              category_search:'',
+              menu_search:'',
           }
         },
         methods:{
+            catgorySearch: _.debounce(()=> {
+                Fire.$emit('searchCategory')
+            },1000),
+            menuSearch: _.debounce(()=> {
+                Fire.$emit('searchMenu')
+            },1000),
+            getProducts(page = 1) {
+                axios.get('api/menu?page=' + page)
+                    .then(data => {
+                        this.products = data.data;
+                    });
+            },
             updateMenu(){
               this.$Progress.start()
               this.form.put('api/menu/'+this.form.id)
@@ -420,7 +444,39 @@
         created(){
             this.fetchMenu();
             this.fetchCategory();
-            //
+            Fire.$on('searchCategory', ()=>{
+                let query = this.category_search;
+
+                axios.get('api/searchcategory?q='+ query)
+                .then( (data)=> {
+                    this.categories = data.data
+                })
+                .catch(() => {
+                    this.$Progress.fail()
+                    swal.fire(
+                        'Failed!',
+                        'Something went wrong',
+                        'warning'
+                    )
+                })
+            })
+
+            Fire.$on('searchMenu', ()=>{
+                let query = this.menu_search;
+
+                axios.get('api/searchmenu?q='+ query)
+                    .then( (data)=> {
+                        this.products = data.data
+                    })
+                    .catch(() => {
+                        this.$Progress.fail()
+                        swal.fire(
+                            'Failed!',
+                            'Something went wrong',
+                            'warning'
+                        )
+                    })
+            })
             Fire.$on('AfterMenuAction', ()=>{
                 this.fetchMenu()
             })

@@ -5,35 +5,24 @@ use App\Http\Controllers\Controller;
 
 use App\Category;
 use Illuminate\Http\Request;
+use function foo\func;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+
+
+    }
+
     public function index()
     {
       return Category::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
       $this->validate($request,[
@@ -47,35 +36,8 @@ class CategoryController extends Controller
       ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
@@ -90,12 +52,7 @@ class CategoryController extends Controller
                 return $request;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //
@@ -104,5 +61,20 @@ class CategoryController extends Controller
         $cat->delete();
 
         return ['message'=> 'Hotel deleted'];
+    }
+
+    public function filterCategories()
+    {
+
+        if ($search = \Request::get('q')) {
+            $categories = Category::where(function ($query) use ($search) {
+                $query->where('category', 'LIKE', "%$search");
+            })->get();
+
+        }else{
+            $categories = Category::all();
+        }
+
+        return $categories;
     }
 }

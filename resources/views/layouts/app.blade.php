@@ -15,6 +15,7 @@
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+{{--    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">--}}
     <!-- Theme style -->
     <link rel="stylesheet" href=" {{ asset('dist/css/adminlte.min.css') }}">
     <!-- Google Font: Source Sans Pro -->
@@ -88,7 +89,7 @@
 
                         <li class="nav-item">
                             <router-link to="/sell" class="nav-link">
-                                <i class="nav-icon fa fa-money"></i>
+                                <i class="nav-icon fa fa-money-bill"></i>
                                 <p>
                                     Point of Sell
                                 </p>
@@ -110,7 +111,7 @@
                             <router-link to="/invoice" class="nav-link">
                                 <i class="nav-icon fa fa-pen-square"></i>
                                 <p>
-                                    Invoice
+                                    Order from Store
                                 </p>
                             </router-link>
                         </li>
@@ -125,7 +126,7 @@
                         </li>
 
 
-                        <li class="nav-item">
+                        <li class="nav-item fixed-bottom">
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                              document.getElementById('logout-form').submit();" class="nav-link">
@@ -148,12 +149,7 @@
             <!-- /.sidebar -->
         </aside>
 
-
         @yield('content')
-
-
-
-
     <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
@@ -174,11 +170,17 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src=" {{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+{{--    <!-- datatables-->--}}
+{{--    <script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>--}}
+{{--    <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>--}}
+
     <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src=" {{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('main.js') }}"></script>
     <script src="{{ mix('js/app.js')}}"></script>
+    <script src=" {{asset('dist/js/demo.js')}}"></script>
+
     </body>
 @else
     @yield('content')
