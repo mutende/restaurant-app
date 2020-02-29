@@ -134,11 +134,11 @@
                         </li>
 
 
-                        <li class="nav-item fixed-bottom">
+                        <li class="nav-item">
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                              document.getElementById('logout-form').submit();" class="nav-link">
-                                <i class="nav-icon fa fa-power-off text-danger"></i>
+                                <i class="nav-icon fa fa-power-off text-danger  "></i>
                                 <p>Logout</p>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

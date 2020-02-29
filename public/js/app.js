@@ -85875,7 +85875,7 @@ var render = function() {
                                     _c(
                                       "label",
                                       { attrs: { for: "productInput" } },
-                                      [_vm._v("Product Name")]
+                                      [_vm._v("Menu Item")]
                                     ),
                                     _vm._v(" "),
                                     _c("input", {

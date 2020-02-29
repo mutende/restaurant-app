@@ -113,7 +113,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="productInput" >Product Name</label>
+                                                    <label for="productInput" >Menu Item</label>
                                                     <input type="text"  class="form-control" :class="{ 'is-invalid': form.errors.has('product_name') }" id="productInput" v-model="form.product_name" name="product_name">
                                                     <has-error :form="form" field="product_name"></has-error>
 
