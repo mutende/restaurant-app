@@ -9,6 +9,11 @@ import VueProgressBar from 'vue-progressbar'
 import jsPDF from 'jspdf'
 import  'jspdf-autotable'
 
+import Chartkick from 'vue-chartkick'
+import Chart from 'chart.js'
+
+
+
 window.Vue = require('vue');
 window.Form = Form
 window.swal = swal
@@ -41,16 +46,18 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.use(VueRouter)
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.use(Chartkick.use(Chart))
 
 // Vue.prototype.$userId =  document.querySelector("meta[name='user-id']").getAttribute('content');
 const routes = [
     {path: '/profile', component: require('./components/Profile.vue').default},
-    {path: '/home', component: require('./components/Home.vue').default},
+    {path: '/hotels', component: require('./components/Hotels.vue').default},
+    {path: '/home', component: require('./components/Dashboard.vue').default},
     {path: '/menu', component: require('./components/Menu.vue').default},
     {path: '/invoice', component: require('./components/Invoice.vue').default},
     {path: '/reports', component: require('./components/Reports.vue').default},
     {path: '/sell', component: require('./components/Sell.vue').default},
-    {path: '*', component: require('./components/Home.vue').default},
+    {path: '*', component: require('./components/Dashboard.vue').default},
 
 
 ]

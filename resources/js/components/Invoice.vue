@@ -59,7 +59,7 @@
                                         <table class="table table-head-fixed text-nowrap table-hover" id="orders-table">
                                             <thead>
                                             <tr>
-                                                <th>Ref ID</th>
+                                                <th>Order Ref No.</th>
                                                 <th>Item</th>
                                                 <th>Quantity</th>
                                                 <th>Received</th>

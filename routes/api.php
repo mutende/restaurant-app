@@ -43,5 +43,6 @@ Route::get('searchmenu','API\ProductController@filterproducts');
 
 Route::get('report/menu','API\ReportController@menu');
 Route::get('report/sales','API\ReportController@sales');
+Route::get('dashboard', 'API\DashboardController@index');
 
 

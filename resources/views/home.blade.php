@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Home')
+@section('title','Mealzone')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -13,6 +13,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link to="/home">Dashboard</router-link></li>
+                            <li class="breadcrumb-item"><router-link to="/hotels">Hotels</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/menu">Menu</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/sell">Point of Sell</router-link></li>
                             <li class="breadcrumb-item"><router-link to="/reports">Reports</router-link></li>

@@ -125,7 +125,7 @@
                                                     <has-error :form="form" field="category"></has-error>
 
                                                     <label for="priceInput" >Price</label>
-                                                    <input type="text"  class="form-control" :class="{ 'is-invalid': form.errors.has('price') }" id="priceInput" v-model="form.price" name="price">
+                                                    <input type="number"  class="form-control" :class="{ 'is-invalid': form.errors.has('price') }" id="priceInput" v-model="form.price" name="price">
                                                     <has-error :form="form" field="price"></has-error>
 
                                                 </div>
@@ -175,8 +175,7 @@
                                           <tr v-for="p in products.data" :key="(p.id)">
 
                                               <td>{{p.product_name}}</td>
-
-                                               <td>{{p.category.category}}</td>
+                                              <td>{{p.category.category}}</td>
                                               <td>{{p.price}}</td>
 
                                               <!-- <td><span class="tag tag-success"><i class="fa fa-check text-success"></i></span></td> -->

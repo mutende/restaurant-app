@@ -77,6 +77,14 @@
                                 </p>
                             </router-link>
                         </li>
+                        <li class="nav-item">
+                            <router-link to="/hotels" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>
+                                    Hotels
+                                </p>
+                            </router-link>
+                        </li>
 
                         <li class="nav-item">
                             <router-link to="/menu" class="nav-link">
