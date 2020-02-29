@@ -29,6 +29,9 @@ Route::apiResources([
 Route::apiResources([
     'invoice' =>'API\InvoiceDetailController'
 ]);
+Route::apiResources([
+    'order' =>'API\OrdersController'
+]);
 
 
 Route::get('profile', 'API\ProfileController@userProfile');
@@ -36,4 +39,5 @@ Route::put('profile', 'API\ProfileController@updateProfile');
 Route::get('items','API\ProductController@getItems');
 Route::get('searchcategory','API\CategoryController@filterCategories');
 Route::get('searchmenu','API\ProductController@filterproducts');
+//Route::post('updateorder/{id}','API\OrdersController@filterproducts');
 

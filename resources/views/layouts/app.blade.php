@@ -170,9 +170,9 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src=" {{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-{{--    <!-- datatables-->--}}
-{{--    <script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>--}}
-{{--    <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>--}}
+
+    <!-- Bootstrap4 Duallistbox -->
+    <script src="{{ asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
 
     <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- AdminLTE App -->
@@ -180,6 +180,7 @@
     <script src="{{ asset('main.js') }}"></script>
     <script src="{{ mix('js/app.js')}}"></script>
     <script src=" {{asset('dist/js/demo.js')}}"></script>
+
 
     </body>
 @else

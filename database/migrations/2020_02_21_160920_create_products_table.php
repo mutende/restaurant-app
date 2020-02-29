@@ -20,9 +20,6 @@ class CreateProductsTable extends Migration
           $table->integer('price');
           $table->integer('category_id')->unsigned()->nullable();
           $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
-          $table->string('description')->nullable();
-          $table->string('rate')->nullable();
-          $table->string('available')->default('yes');
           $table->timestamps();
         });
     }
