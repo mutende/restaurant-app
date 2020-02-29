@@ -41,3 +41,7 @@ Route::get('searchcategory','API\CategoryController@filterCategories');
 Route::get('searchmenu','API\ProductController@filterproducts');
 //Route::post('updateorder/{id}','API\OrdersController@filterproducts');
 
+Route::get('report/menu','API\ReportController@menu');
+Route::get('report/sales','API\ReportController@sales');
+
+

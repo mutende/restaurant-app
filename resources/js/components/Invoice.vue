@@ -43,7 +43,7 @@
                                             <form class="form-inline" @submit.prevent="updateReceived()">
 
                                                 <div class="form-group mx-sm-3 mb-2">
-                                                    <label for="refID" class="mr-2">Order Ref Number</label>
+                                                    <label for="refID" class="mr-2">Select Order Ref Number</label>
                                                     <select class="form-control select" :class="{ 'is-invalid': form2.errors.has('ref_id') }" name="ref_id" v-model="form2.ref_id" id="refID">
                                                         <option v-for="order in oders">{{order.order_ref_no}}</option>
                                                     </select>
