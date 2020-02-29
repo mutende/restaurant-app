@@ -56,7 +56,7 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0" style="height: 300px;">
-                                        <table class="table table-head-fixed text-nowrap table-hover">
+                                        <table class="table table-head-fixed text-nowrap table-hover" id="orders-table">
                                             <thead>
                                             <tr>
                                                 <th>Ref ID</th>
@@ -70,14 +70,20 @@
                                                 <td>{{ order.order_ref_no}}</td>
                                                 <td>{{ order.item}}</td>
                                                 <td>{{ order.quantity}}</td>
-                                                <td><i  v-if="order.received" class="fa fa-check text-success" aria-hidden="true"></i><i  v-else class="fa fa-times text-danger" aria-hidden="true"></i></td>
+                                                <td><i  v-if="order.received" class="fa fa-check text-success" aria-hidden="true"> Yes</i><i  v-else class="fa fa-times text-danger" aria-hidden="true"> No</i></td>
 
                                             </tr>
 
                                             </tbody>
                                         </table>
                                     </div>
+
                                     <!-- /.card-body -->
+                                </div>
+                                <div class="card-footer">
+                                    <div class="float-left">
+                                        <button class="btn btn-outline-success print-button" @click="printOrders"> <i class="nav-icon fa fa-print mr-2"></i>  Print </button>
+                                    </div>
                                 </div>
                                 <!-- /.card -->
                             </div>
@@ -118,6 +124,14 @@
             }
         },
         methods: {
+            printOrders(){
+                let pdf = new jsPDF()
+                pdf.text("Mealzone Hotel Order from Store", 10,20)
+                pdf.autoTable({
+                    startY:25,
+                    html: '#orders-table' })
+                pdf.save("orders.pdf")
+            },
             updateReceived(){
                     this.$Progress.start()
                     this.form2.put('api/order/'+this.form2.ref_id)
@@ -167,6 +181,9 @@
 
 <style scoped>
     .select{
+        width:200px !important;
+    }
+    .print-button{
         width:200px !important;
     }
 

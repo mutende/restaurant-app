@@ -6,10 +6,13 @@ import { Form, HasError, AlertError } from 'vform'
 import VueRouter from 'vue-router'
 import swal from 'sweetalert2'
 import VueProgressBar from 'vue-progressbar'
+import jsPDF from 'jspdf'
+import  'jspdf-autotable'
 
 window.Vue = require('vue');
 window.Form = Form
 window.swal = swal
+window.jsPDF = jsPDF
 
 Vue.use(VueProgressBar, {
     color: 'rgb(143,255,199)',

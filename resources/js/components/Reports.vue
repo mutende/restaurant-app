@@ -12,7 +12,8 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="activity">
                             <div class="card-body table-responsive p-0" style="height: 500px;">
-                                <table class="table table-head-fixed text-nowrap table-hover">
+                                <table class="table table-head-fixed text-nowrap table-hover" id="menu-table">
+
                                     <thead>
                                     <tr>
                                         <th>Item</th>
@@ -31,7 +32,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="float-left">
-                                        <button class="btn btn-outline-success print-button" > Print </button>
+                                        <button class="btn btn-outline-success print-button" @click="downloadMenu"> <i class="nav-icon fa fa-print mr-2"></i>  Print </button>
                                 </div>
                             </div>
 
@@ -39,11 +40,11 @@
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="timeline">
                             <div class="card-body table-responsive p-0" style="height: 500px;">
-                                <table class="table table-head-fixed text-nowrap table-hover">
+                                <table class="table table-head-fixed text-nowrap table-hover" id="sales-table">
                                     <thead>
                                     <tr>
                                         <th>RefID</th>
-                                        <th>Product</th>
+                                        <th>Item</th>
                                         <th>Quantity</th>
                                         <th>Price</th>
                                         <th>Total Price</th>
@@ -62,6 +63,11 @@
 
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer">
+                                <div class="float-left">
+                                    <button class="btn btn-outline-success print-button" @click="downloadSalesReport"> <i class="nav-icon fa fa-print mr-2"></i>  Print </button>
+                                </div>
                             </div>
 
                         </div>
@@ -91,6 +97,23 @@
             this.$Progress.finish()
         },
         methods:{
+            downloadMenu(){
+                let pdf = new jsPDF()
+                pdf.text("Mealzone Hotel Menu List", 10,20)
+                pdf.autoTable({
+                    startY:25,
+                    html: '#menu-table' })
+                pdf.save("menu.pdf")
+            },
+
+            downloadSalesReport(){
+                let pdf = new jsPDF()
+                pdf.text("Mealzone Hotel Sales Report", 10,20)
+                pdf.autoTable({
+                    startY:25,
+                    html: '#sales-table' })
+                pdf.save("sales.pdf")
+            },
             fetchMenu(){
                 axios.get('api/report/menu')
                     .then(({data})=>(this.products= data));
