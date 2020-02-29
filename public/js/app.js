@@ -7719,7 +7719,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.select[data-v-b7c7e3dc]{\n    width:200px !important;\n}\n.print-button[data-v-b7c7e3dc]{\n    width:200px !important;\n}\n\n", ""]);
+exports.push([module.i, "\n.select[data-v-b7c7e3dc], .add-btn[data-v-b7c7e3dc], .print-button[data-v-b7c7e3dc]{\n    width:200px !important;\n}\n\n", ""]);
 
 // exports
 
@@ -47093,7 +47093,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-footer" }, [
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        { staticClass: "btn btn-primary add-btn", attrs: { type: "submit" } },
         [_vm._v("Add")]
       )
     ])

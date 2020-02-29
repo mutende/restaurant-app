@@ -26,7 +26,7 @@
 
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="submit" class="btn btn-primary add-btn">Add</button>
                             </div>
                             </form>
                         </div>
@@ -180,10 +180,7 @@
 </script>
 
 <style scoped>
-    .select{
-        width:200px !important;
-    }
-    .print-button{
+    .select, .add-btn, .print-button{
         width:200px !important;
     }
 
