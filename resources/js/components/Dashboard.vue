@@ -162,8 +162,8 @@
                     })
                     .catch(() => {
                         swal.fire(
-                            'Failed!',
-                            'Something went wrong',
+                            'Warning!',
+                            'No data to draw charts currently',
                             'warning'
                         )
                     })

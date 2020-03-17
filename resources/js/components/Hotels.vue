@@ -30,16 +30,7 @@
                                     <has-error :form="form" field="location"></has-error>
                                 </div>
 
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Hotel Logo</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file"  id="exampleInputFile" @change="uploadLogo" name="logo">
-
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    
                             </div>
                             <input type="hidden" v-model="form.user" name="user">
                             <div class="modal-footer justify-content-between">

@@ -15,7 +15,11 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Auth::routes();
+
+Auth::routes([
+    'register' => false, // Registration Routes...
+    'verify' => false
+    ]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('{path}', 'HomeController@index')->where('path', '([a-z\d-]+)?' );

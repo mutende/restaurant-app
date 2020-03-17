@@ -15,7 +15,6 @@
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-{{--    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">--}}
     <!-- Theme style -->
     <link rel="stylesheet" href=" {{ asset('dist/css/adminlte.min.css') }}">
     <!-- Google Font: Source Sans Pro -->
@@ -182,11 +181,10 @@
     <!-- Bootstrap4 Duallistbox -->
     <script src="{{ asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
 
-    <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src=" {{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('main.js') }}"></script>
-    <script src="{{ mix('js/app.js')}}"></script>
+    <script src="{{ asset('js/app.js')}}"></script>
     <script src=" {{asset('dist/js/demo.js')}}"></script>
 
 
