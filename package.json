@@ -24,7 +24,7 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
-        "chart.js": "^2.9.3",
+        "chart.js": "^2.9.4",
         "jspdf": "^1.5.3",
         "jspdf-autotable": "^3.2.13",
         "laravel-vue-pagination": "^2.3.1",
